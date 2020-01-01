@@ -1,9 +1,11 @@
 use std::io;
+use std::str;
 use std::thread;
 use std::time::Duration;
 
 use std::io::prelude::*;
 use serial::prelude::*;
+use std::io::BufReader;
 
 fn main() {
     println!("Hello, world!");
@@ -27,9 +29,9 @@ fn interact<T: SerialPort>(port: &mut T) -> io::Result<()> {
     println!("getting status...");
     println!("{}", get_status(port));
 
-//    println!("-----");
-//    println!("getting access points");
-//    println!("{}", list_available_aps(port));
+    println!("-----");
+    println!("getting access points");
+    println!("{}", list_available_aps(port));
 
     Ok(())
 }
@@ -43,10 +45,27 @@ fn list_available_aps<T: SerialPort>(port: &mut T) -> String {
 }
 
 fn send<T: SerialPort>(port: &mut T, command: &str) -> String {
-    port.write(command.as_bytes()).unwrap();
+    let request = command.as_bytes();
+
+    port.write(&request).unwrap();
     port.flush().unwrap();
 
-    let mut buffer: Vec<u8> = vec![0u8; 256];
-    let bytes_read = port.read(&mut buffer).unwrap();
-    String::from_utf8(buffer).unwrap()
+    read_all(port)
+}
+
+fn read_all<T: SerialPort>(port: &mut T) -> String {
+    let mut buffer = vec![0u8; 256];
+    let mut response : Vec<u8> = Vec::new();
+
+    loop {
+        let bytes_read = port.read(&mut buffer).unwrap();
+        response.extend_from_slice(&buffer[..bytes_read]);
+
+        let response_slice = &buffer[..bytes_read];
+        if response_slice.ends_with(b"OK\r\n") || response_slice.ends_with(b"ERROR\r\n") {
+            break;
+        }
+    }
+
+    String::from_utf8(response).unwrap()
 }
