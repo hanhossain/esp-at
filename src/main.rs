@@ -17,21 +17,25 @@ fn main() {
         Ok(())
     }).unwrap();
 
-    port.set_timeout(Duration::from_millis(5000)).unwrap();
+    port.set_timeout(Duration::from_millis(30_000)).unwrap();
 
     let mut at_client = ATClient::new(port);
-    let mut at_basic = ATBasic::new(&mut at_client);
-
-    println!("checking startup...");
-    println!("{}", at_basic.test_startup());
-
-    println!("getting status...");
-    println!("{}", at_basic.get_status());
-
     let mut at_wifi = ATWifi::new(&mut at_client);
-    println!("getting access points...");
-    println!("{}", at_wifi.get_available_access_points());
 
-    println!("disconnecting from  access point...");
+    println!("Current AP");
+    println!("{}", at_wifi.get_current_access_point());
+
+    println!("Connecting...");
+    let ssid = "ssid";
+    let password = "password";
+    println!("{}", at_wifi.connect_to_access_point(ssid, password));
+
+    println!("Current AP");
+    println!("{}", at_wifi.get_current_access_point());
+
+    println!("Disconnecting...");
     println!("{}", at_wifi.disconnect_from_access_point());
+
+    println!("Current AP");
+    println!("{}", at_wifi.get_current_access_point());
 }
