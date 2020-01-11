@@ -1,4 +1,5 @@
 pub mod basic;
+pub mod wifi;
 
 use std::io::prelude::*;
 use serial::SystemPort;
@@ -12,7 +13,7 @@ impl ATClient {
         ATClient { handle }
     }
 
-    fn send(&mut self, command: &str) -> String {
+    pub fn send(&mut self, command: &str) -> String {
         // write
         let command = command.to_owned() + "\r\n";
         let request = command.as_bytes();

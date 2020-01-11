@@ -1,11 +1,11 @@
 use crate::ATClient;
 
-pub struct ATBasic {
-    client: ATClient
+pub struct ATBasic<'a> {
+    client: &'a mut ATClient
 }
 
-impl ATBasic {
-    pub fn new(client: ATClient) -> Self {
+impl<'a> ATBasic<'a> {
+    pub fn new(client: &'a mut ATClient) -> Self {
         ATBasic { client }
     }
 
@@ -15,9 +15,5 @@ impl ATBasic {
 
     pub fn get_status(&mut self) -> String {
         self.client.send("AT+GMR")
-    }
-
-    pub fn list_available_aps(&mut self) -> String {
-        self.client.send("AT+CWLAP")
     }
 }
