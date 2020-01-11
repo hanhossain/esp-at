@@ -1,9 +1,8 @@
 use esp_at::ATClient;
-use std::str;
 use std::time::Duration;
 
-use std::io::prelude::*;
 use serial::prelude::*;
+use esp_at::basic::ATBasic;
 
 fn main() {
     let mut port = serial::open("/dev/cu.usbserial-AL00WS14").unwrap();
@@ -20,11 +19,15 @@ fn main() {
     port.set_timeout(Duration::from_millis(5000)).unwrap();
 
     let mut at_client = ATClient::new(port);
+    let mut at_basic = ATBasic::new(at_client);
+
+    println!("checking startup...");
+    println!("{}", at_basic.test_startup());
 
     println!("getting status...");
-    println!("{}", at_client.get_status());
+    println!("{}", at_basic.get_status());
 
     println!("-----");
     println!("getting access points");
-    println!("{}", at_client.list_available_aps());
+    println!("{}", at_basic.list_available_aps());
 }
