@@ -1,9 +1,7 @@
-use esp_at::ATClient;
-use std::time::Duration;
-
-use esp_at::basic::ATBasic;
 use esp_at::wifi::ATWifi;
+use esp_at::ATClient;
 use serial::prelude::*;
+use std::time::Duration;
 
 fn main() {
     let mut port = serial::open("/dev/cu.usbserial-AL00WS14").unwrap();
