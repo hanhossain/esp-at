@@ -45,5 +45,5 @@ impl<'a> ATWifi<'a> {
 pub enum WifiMode {
     Station,
     SoftAccessPoint,
-    SoftAccessPointAndStation
+    SoftAccessPointAndStation,
 }

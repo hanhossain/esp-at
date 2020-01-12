@@ -1,7 +1,7 @@
 use crate::ATClient;
 
 pub struct ATBasic<'a> {
-    client: &'a mut ATClient
+    client: &'a mut ATClient,
 }
 
 impl<'a> ATBasic<'a> {

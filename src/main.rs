@@ -1,9 +1,9 @@
 use esp_at::ATClient;
 use std::time::Duration;
 
-use serial::prelude::*;
 use esp_at::basic::ATBasic;
 use esp_at::wifi::ATWifi;
+use serial::prelude::*;
 
 fn main() {
     let mut port = serial::open("/dev/cu.usbserial-AL00WS14").unwrap();
@@ -15,7 +15,8 @@ fn main() {
         settings.set_stop_bits(serial::Stop1);
         settings.set_flow_control(serial::FlowNone);
         Ok(())
-    }).unwrap();
+    })
+    .unwrap();
 
     port.set_timeout(Duration::from_millis(30_000)).unwrap();
 

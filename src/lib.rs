@@ -1,8 +1,8 @@
 pub mod basic;
 pub mod wifi;
 
-use std::io::prelude::*;
 use serial::SystemPort;
+use std::io::prelude::*;
 
 pub struct ATClient {
     handle: SystemPort,
@@ -30,7 +30,10 @@ impl ATClient {
             response.extend_from_slice(&buffer[..bytes_read]);
 
             let response_slice = &buffer[..bytes_read];
-            if response_slice.ends_with(b"OK\r\n") || response_slice.ends_with(b"ERROR\r\n") || response_slice.ends_with(b"WIFI DISCONNECT\r\n") {
+            if response_slice.ends_with(b"OK\r\n")
+                || response_slice.ends_with(b"ERROR\r\n")
+                || response_slice.ends_with(b"WIFI DISCONNECT\r\n")
+            {
                 break;
             }
         }
